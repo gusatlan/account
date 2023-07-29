@@ -14,7 +14,7 @@ spring:
         enabled: true
       auto-index-creation: true
       authentication-database: admin
-      uri: mongodb://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}/bank?authSource=admin
+      uri: mongodb://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}?authSource=admin
 
   # Kafka
   kafka:
