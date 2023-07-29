@@ -11,6 +11,6 @@ interface BankAccountEventRepository : ReactiveCrudRepository<BankAccountEvent, 
     fun findByIdEventId(eventId: String): Flux<BankAccountEvent>
     fun findByIdCustomerId(customerId: String): Flux<BankAccountEvent>
     fun findByIdAccountId(accountId: String): Flux<BankAccountEvent>
-
-    fun findByDateBetween(begin: LocalDateTime, end: LocalDateTime) : Flux<BankAccountEvent>
+    fun findByIdCustomerIdAndIdAccountId(customerId: String, accountId:String): Flux<BankAccountEvent>
+    fun findByIdCustomerIdAndIdAccountIdAndIdEventId(customerId: String, accountId:String, eventId: String): Flux<BankAccountEvent>
 }

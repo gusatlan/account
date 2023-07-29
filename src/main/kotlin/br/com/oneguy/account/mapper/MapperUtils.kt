@@ -39,14 +39,12 @@ fun BankAccountEventIdDTO.transform(): BankAccountEventId {
     )
 }
 
-fun BankAccount.transform(events: Collection<BankAccountEvent>): BankAccountDTO {
-    val items = events.stream().map(BankAccountEvent::transform).sorted().toList()
-
+fun BankAccount.transform(events: Collection<BankAccountEventDTO>): BankAccountDTO {
     return BankAccountDTO(
         id = id.transform(),
         since = since,
         expiredAt = expiredAt,
-        transactions = items
+        transactions = events
     )
 }
 

@@ -7,26 +7,26 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 class BankAccountController(
-    private val bankAccountService: BankAccountService
+    private val service: BankAccountService
 ) {
 
     @GetMapping("/account")
-    fun findBankAccount(
+    fun find(
         @RequestParam("customerId", required = false) customerId: String? = null,
         @RequestParam("accountId", required = false) accountId: String? = null,
-    ) = bankAccountService.find(customerId, accountId)
+    ) = service.find(customerId, accountId)
 
     @PostMapping("/account")
     @PutMapping("/account")
-    fun saveBankAccount(@RequestBody value: BankAccountDTO) =
-        bankAccountService.send(
+    fun save(@RequestBody value: BankAccountDTO) =
+        service.send(
             value = value,
             type = EventTypeEnum.INSERT
         )
 
     @DeleteMapping("/account")
-    fun removeBankAccount(@RequestBody value: BankAccountDTO) =
-        bankAccountService.send(
+    fun remove(@RequestBody value: BankAccountDTO) =
+        service.send(
             value = value,
             type = EventTypeEnum.DELETE
         )

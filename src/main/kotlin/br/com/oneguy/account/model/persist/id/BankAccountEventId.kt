@@ -8,9 +8,9 @@ class BankAccountEventId(
     eventId: String
 ) {
 
-    val customerId = cleanCodeText(customerId)
-    val accountId = cleanCodeText(accountId)
-    val eventId = cleanCodeText(eventId)
+    val customerId = cleanCodeText(customerId).lowercase()
+    val accountId = cleanCodeText(accountId).lowercase()
+    val eventId = cleanCodeText(eventId).lowercase()
 
     override fun equals(other: Any?) = other != null &&
             other is BankAccountEventId &&
