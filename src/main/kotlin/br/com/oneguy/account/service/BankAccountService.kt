@@ -2,11 +2,12 @@ package br.com.oneguy.account.service
 
 import br.com.oneguy.account.mapper.transform
 import br.com.oneguy.account.model.dto.BankAccountDTO
-import br.com.oneguy.account.model.dto.PersistRequest
+import br.com.oneguy.account.model.dto.PersistRequestBankAccountDTO
 import br.com.oneguy.account.model.persist.BankAccount
 import br.com.oneguy.account.model.persist.EventTypeEnum
 import br.com.oneguy.account.repository.BankAccountRepository
 import br.com.oneguy.account.util.cleanCodeText
+import br.com.oneguy.account.util.mapper
 import org.slf4j.LoggerFactory
 import org.springframework.cloud.stream.function.StreamBridge
 import org.springframework.stereotype.Service
@@ -22,6 +23,9 @@ class BankAccountService(
 
     companion object {
         private val logger = LoggerFactory.getLogger(this::class.java)
+
+        //        private const val TOPIC: String = "upsertBankAccountPersist-out-0"
+        private const val TOPIC: String = "account-upsert-bank-account"
     }
 
     fun find(customerId: String? = null, accountId: String? = null): Flux<BankAccountDTO> {
@@ -56,10 +60,13 @@ class BankAccountService(
     }
 
     fun send(value: BankAccountDTO, type: EventTypeEnum) {
-        val item = PersistRequest(
-            type = type,
-            entity = value.transform()
-        )
-        bridge.send("upsertBankAccountPersist-in-0", item)
+        val item =
+            PersistRequestBankAccountDTO(
+                type = type,
+                entity = value
+            )
+
+        logger.info("BankAccountService:send $item")
+        bridge.send(TOPIC, item)
     }
 }

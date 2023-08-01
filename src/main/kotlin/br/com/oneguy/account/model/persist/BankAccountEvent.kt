@@ -8,10 +8,10 @@ import java.time.LocalDateTime
 
 @Document(collection = "account_events")
 data class BankAccountEvent(
-    @field:Id val id: BankAccountEventId,
-    val type: EventTransactionTypeEnum,
-    val date: LocalDateTime,
-    val value: BigDecimal
+    @field:Id val id: BankAccountEventId = BankAccountEventId(),
+    val type: EventTransactionTypeEnum = EventTransactionTypeEnum.DEPOSIT,
+    val date: LocalDateTime = LocalDateTime.now(),
+    val value: BigDecimal = BigDecimal.ZERO
 ) : Comparable<BankAccountEvent> {
 
     override fun equals(other: Any?) = other != null && other is BankAccountEvent && id == other.id

@@ -2,7 +2,8 @@ package br.com.oneguy.account.util
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import java.util.*
+
+val mapper = buildMapper()
 
 fun buildMapper(): ObjectMapper {
     val mapper = ObjectMapper()

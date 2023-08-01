@@ -2,13 +2,12 @@ package br.com.oneguy.account.service
 
 import br.com.oneguy.account.mapper.transform
 import br.com.oneguy.account.model.dto.BankAccountEventDTO
-import br.com.oneguy.account.model.dto.PersistRequest
+import br.com.oneguy.account.model.dto.PersistRequestBankAccountEventDTO
 import br.com.oneguy.account.model.persist.BankAccountEvent
 import br.com.oneguy.account.model.persist.EventTypeEnum
 import br.com.oneguy.account.repository.BankAccountEventRepository
 import br.com.oneguy.account.util.cleanCodeText
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.cloud.stream.function.StreamBridge
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
@@ -21,6 +20,7 @@ class BankAccountEventService(
 
     companion object {
         private val logger = LoggerFactory.getLogger(this::class.java)
+        private const val TOPIC: String = "account-upsert-bank-account-event"
     }
 
     fun find(
@@ -58,10 +58,13 @@ class BankAccountEventService(
     }
 
     fun send(value: BankAccountEventDTO, type: EventTypeEnum) {
-        val item = PersistRequest(
-            type = type,
-            entity = value.transform()
-        )
-        bridge.send("upsertBankAccountEventPersist-in-0", item)
+        val item =
+            PersistRequestBankAccountEventDTO(
+                type = type,
+                entity = value
+            )
+
+        logger.info("BankAccountEventService:send $item")
+        bridge.send(TOPIC, item)
     }
 }

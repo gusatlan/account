@@ -7,7 +7,7 @@ import java.time.LocalDateTime
 
 @Document(collection = "accounts")
 data class BankAccount(
-    @field:Id val id: BankAccountId,
+    @field:Id val id: BankAccountId = BankAccountId(),
     val since: LocalDateTime = LocalDateTime.now(),
     val expiredAt: LocalDateTime? = null
 )

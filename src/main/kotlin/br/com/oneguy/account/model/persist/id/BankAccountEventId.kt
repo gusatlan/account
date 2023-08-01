@@ -3,9 +3,9 @@ package br.com.oneguy.account.model.persist.id
 import br.com.oneguy.account.util.cleanCodeText
 
 class BankAccountEventId(
-    customerId: String,
-    accountId: String,
-    eventId: String
+    customerId: String="",
+    accountId: String="",
+    eventId: String=""
 ) {
 
     val customerId = cleanCodeText(customerId).lowercase()

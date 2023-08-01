@@ -5,7 +5,7 @@ import java.math.BigDecimal
 import java.time.LocalDateTime
 
 data class BankAccountDTO(
-    val id: BankAccountIdDTO,
+    val id: BankAccountIdDTO=BankAccountIdDTO(),
     val since: LocalDateTime = LocalDateTime.now(),
     val expiredAt: LocalDateTime? = null,
     val transactions: Collection<BankAccountEventDTO> = emptySet()
@@ -21,4 +21,9 @@ data class BankAccountDTO(
             .reduce { a, b -> a.add(b) }
             .orElse(BigDecimal.ZERO)
     }
+
+    override fun equals(other: Any?) = other != null && other is BankAccountDTO && id == other.id
+    override fun hashCode()=id.hashCode()
+    override fun toString() = """{"id": $id, "since": "$since", "expiredAt": "$expiredAt"}"""
+
 }

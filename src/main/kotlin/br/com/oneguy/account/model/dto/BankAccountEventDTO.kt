@@ -6,10 +6,10 @@ import java.math.BigDecimal
 import java.time.LocalDateTime
 
 data class BankAccountEventDTO(
-    val id: BankAccountEventIdDTO,
-    val type: EventTransactionTypeEnum,
-    val date: LocalDateTime,
-    val value: BigDecimal
+    val id: BankAccountEventIdDTO = BankAccountEventIdDTO(),
+    val type: EventTransactionTypeEnum = EventTransactionTypeEnum.DEPOSIT,
+    val date: LocalDateTime = LocalDateTime.now(),
+    val value: BigDecimal = BigDecimal.ZERO
 ) : Comparable<BankAccountEventDTO> {
     override fun equals(other: Any?) = other != null && other is BankAccountEventDTO && id == other.id
     override fun hashCode() = id.hashCode()
