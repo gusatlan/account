@@ -7,6 +7,7 @@ import br.com.oneguy.account.model.persist.BankAccountEvent
 import br.com.oneguy.account.model.persist.EventTypeEnum
 import br.com.oneguy.account.repository.BankAccountEventRepository
 import br.com.oneguy.account.util.cleanCodeText
+import br.com.oneguy.account.util.mapper
 import org.slf4j.LoggerFactory
 import org.springframework.cloud.stream.function.StreamBridge
 import org.springframework.stereotype.Service
@@ -58,11 +59,12 @@ class BankAccountEventService(
     }
 
     fun send(value: BankAccountEventDTO, type: EventTypeEnum) {
-        val item =
+        val item = mapper.writeValueAsString(
             PersistRequestBankAccountEventDTO(
                 type = type,
                 entity = value
             )
+        )
 
         logger.info("BankAccountEventService:send $item")
         bridge.send(TOPIC, item)

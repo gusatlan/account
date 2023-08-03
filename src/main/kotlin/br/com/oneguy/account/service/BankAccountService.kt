@@ -60,11 +60,12 @@ class BankAccountService(
     }
 
     fun send(value: BankAccountDTO, type: EventTypeEnum) {
-        val item =
+        val item = mapper.writeValueAsString(
             PersistRequestBankAccountDTO(
                 type = type,
                 entity = value
             )
+        )
 
         logger.info("BankAccountService:send $item")
         bridge.send(TOPIC, item)
