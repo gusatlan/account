@@ -37,6 +37,7 @@ dependencies {
 	testImplementation("io.projectreactor:reactor-test")
 	testImplementation("org.springframework.cloud:spring-cloud-stream-test-binder")
 	testImplementation("org.springframework.kafka:spring-kafka-test")
+	testImplementation("io.mockk:mockk:1.13.7")
 }
 
 dependencyManagement {

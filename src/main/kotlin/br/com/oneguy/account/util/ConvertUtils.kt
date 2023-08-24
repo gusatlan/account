@@ -2,6 +2,8 @@ package br.com.oneguy.account.util
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 val mapper = buildMapper()
 
@@ -10,7 +12,6 @@ fun buildMapper(): ObjectMapper {
     mapper.registerModule(JavaTimeModule())
     return mapper
 }
-
 
 fun cleanCode(text: String?): String {
     return if (text != null) {
