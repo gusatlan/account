@@ -39,7 +39,7 @@ fun BankAccountEventIdDTO.transform(): BankAccountEventId {
     )
 }
 
-fun BankAccount.transform(events: Collection<BankAccountEventDTO>): BankAccountDTO {
+fun BankAccount.transform(events: Collection<BankAccountEventDTO> = emptySet()): BankAccountDTO {
     return BankAccountDTO(
         id = id.transform(),
         since = since,

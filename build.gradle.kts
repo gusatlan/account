@@ -22,6 +22,8 @@ extra["springCloudVersion"] = "2022.0.1"
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-mongodb-reactive")
+	implementation("org.springframework.boot:spring-boot-starter-graphql")
+	implementation("com.graphql-java-kickstart:graphiql-spring-boot-starter:11.1.0")
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")

@@ -5,7 +5,7 @@ import br.com.oneguy.account.model.persist.EventTransactionTypeEnum
 import java.math.BigDecimal
 import java.time.LocalDateTime
 
-data class BankAccountEventDTO(
+open class BankAccountEventDTO(
     val id: BankAccountEventIdDTO = BankAccountEventIdDTO(),
     val type: EventTransactionTypeEnum = EventTransactionTypeEnum.DEPOSIT,
     val date: LocalDateTime = LocalDateTime.now(),

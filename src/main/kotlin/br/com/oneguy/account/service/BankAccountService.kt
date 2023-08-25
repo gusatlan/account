@@ -23,12 +23,14 @@ class BankAccountService(
 
     companion object {
         private val logger = LoggerFactory.getLogger(this::class.java)
-
-        //        private const val TOPIC: String = "upsertBankAccountPersist-out-0"
         private const val TOPIC: String = "account-upsert-bank-account"
     }
 
-    fun find(customerId: String? = null, accountId: String? = null): Flux<BankAccountDTO> {
+    fun find(
+        customerId: String? = null,
+        accountId: String? = null,
+        retrieveEvents: Boolean = true
+    ): Flux<BankAccountDTO> {
         val items = if (customerId != null && accountId != null) {
             repository.findByIdCustomerIdAndIdAccountId(
                 customerId = cleanCodeText(customerId).lowercase(),
@@ -42,21 +44,24 @@ class BankAccountService(
             Flux.empty()
         }
 
-        return items.flatMap(this::applyEvents)
+        return items.flatMap { applyEvents(it, retrieveEvents) }
             .doOnComplete {
                 logger.info("BankAccountService:find: ($customerId, $accountId)")
             }
     }
 
-    private fun applyEvents(bankAccount: BankAccount): Mono<BankAccountDTO> {
-        return bankAccountEventService.find(
-            customerId = bankAccount.id.customerId,
-            accountId = bankAccount.id.accountId
-        ).collectList()
-            .map { events ->
-                bankAccount.transform(events)
-            }
-
+    private fun applyEvents(bankAccount: BankAccount, retrieveEvents: Boolean = true): Mono<BankAccountDTO> {
+        return if (retrieveEvents) {
+            bankAccountEventService.find(
+                customerId = bankAccount.id.customerId,
+                accountId = bankAccount.id.accountId
+            ).collectList()
+                .map { events ->
+                    bankAccount.transform(events)
+                }
+        } else {
+            Mono.just(bankAccount.transform())
+        }
     }
 
     fun send(value: BankAccountDTO, type: EventTypeEnum) {
