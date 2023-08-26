@@ -1,7 +1,7 @@
 type BankAccountEventId {
-    customerId: String!
-    accountId: String!
-    eventId: String!
+    customerId: String
+    accountId: String
+    eventId: String
 }
 
 type BankAccountId {
@@ -9,26 +9,36 @@ type BankAccountId {
     accountId: String!
 }
 
+input IdBankAccount {
+    customerId: String!
+    accountId: String!
+}
+
+
 enum EventTransactionTypeEnum {
     DEPOSIT
     WITHDRAWN
 }
 
 type BankAccountEvent {
-    id: BankAccountEventId!
-    type: EventTransactionTypeEnum!
-    date: String!
-    value: Float!
-    bankAccount: BankAccount!
+    id: BankAccountEventId
+    type: EventTransactionTypeEnum
+    date: String
+    value: Float
+}
+
+type BankAccountTransactions {
+    items: [BankAccountEvent]
 }
 
 type BankAccount {
     id: BankAccountId!
-    since: String!
+    since: String
     expiredAt: String
-    transactions: [BankAccountEvent!]
+    transactions: BankAccountTransactions
 }
 
 type Query {
-    findAccountById(customerId: String!, accountId: String!): BankAccount
+    findAccountAll: [BankAccount]
+    findAccountById(bankAccountId: IdBankAccount): BankAccount
 }

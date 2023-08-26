@@ -1,22 +1,41 @@
 package br.com.oneguy.account.model.query
 
-import br.com.oneguy.account.model.dto.BankAccountDTO
-import br.com.oneguy.account.model.dto.BankAccountEventDTO
-import br.com.oneguy.account.model.dto.id.BankAccountEventIdDTO
 import br.com.oneguy.account.model.persist.EventTransactionTypeEnum
 import java.math.BigDecimal
 import java.time.LocalDateTime
 
-class BankAccountEventQuery(
-    id: BankAccountEventIdDTO,
-    type: EventTransactionTypeEnum,
-    date: LocalDateTime,
-    value: BigDecimal,
-    val bankAccount: BankAccountDTO
-) : BankAccountEventDTO(
-    id = id,
-    type = type,
-    date = date,
-    value = value
-) {
+data class BankAccountEventQuery(
+    val id: BankAccountEventIdQuery,
+    val type: EventTransactionTypeEnum = EventTransactionTypeEnum.DEPOSIT,
+    val date: LocalDateTime = LocalDateTime.now(),
+    val value: BigDecimal = BigDecimal.ZERO
+): Comparable<BankAccountEventQuery> {
+    override fun equals(other: Any?) = other != null && other is BankAccountEventQuery && id == other.id
+    override fun hashCode() = id.hashCode()
+    override fun toString() = """{"id": $id, "type": "$type", "date": "$date", "value": $value}"""
+
+    override fun compareTo(other: BankAccountEventQuery): Int {
+        val compares = listOf(
+            id.customerId.compareTo(other.id.customerId),
+            id.accountId.compareTo(other.id.accountId),
+            date.compareTo(other.date)
+        )
+        var comp = 0
+
+        for (c in compares) {
+            comp = c
+            if (comp != 0) {
+                break
+            }
+        }
+
+        return comp
+    }
+
+    fun computeValue(): BigDecimal {
+        return when (type) {
+            EventTransactionTypeEnum.DEPOSIT -> value.abs()
+            EventTransactionTypeEnum.WITHDRAWN -> value.abs().negate()
+        }
+    }
 }

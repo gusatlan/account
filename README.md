@@ -14,3 +14,14 @@ Para executar é necessário ter o docker na máquina
 ```
 ./run
 ```
+
+## 2023-08-26
+
+Adicionado implementação com GraphQL.
+
+O endereço da api:
+* http://localhost:8080/graphql
+
+E o endereço ui:
+* http://localhost:8080/graphiql
+

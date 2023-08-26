@@ -8,16 +8,13 @@ import br.com.oneguy.account.model.persist.BankAccount
 import br.com.oneguy.account.model.persist.BankAccountEvent
 import br.com.oneguy.account.model.persist.id.BankAccountEventId
 import br.com.oneguy.account.model.persist.id.BankAccountId
+import br.com.oneguy.account.model.query.BankAccountEventIdQuery
+import br.com.oneguy.account.model.query.BankAccountEventQuery
+import br.com.oneguy.account.model.query.BankAccountQuery
+import br.com.oneguy.account.model.query.BankAccountTransactionsQuery
 
 fun BankAccountId.transform(): BankAccountIdDTO {
     return BankAccountIdDTO(
-        customerId = customerId,
-        accountId = accountId
-    )
-}
-
-fun BankAccountIdDTO.transform(): BankAccountId {
-    return BankAccountId(
         customerId = customerId,
         accountId = accountId
     )
@@ -39,6 +36,14 @@ fun BankAccountEventIdDTO.transform(): BankAccountEventId {
     )
 }
 
+fun BankAccountEventIdDTO.transformQuery(): BankAccountEventIdQuery {
+    return BankAccountEventIdQuery(
+        customerId = customerId,
+        accountId = accountId,
+        eventId = eventId
+    )
+}
+
 fun BankAccount.transform(events: Collection<BankAccountEventDTO> = emptySet()): BankAccountDTO {
     return BankAccountDTO(
         id = id.transform(),
@@ -48,9 +53,9 @@ fun BankAccount.transform(events: Collection<BankAccountEventDTO> = emptySet()):
     )
 }
 
-fun BankAccountDTO.transform(): BankAccount {
-    return BankAccount(
-        id = id.transform(),
+fun BankAccountDTO.transformQuery(): BankAccountQuery {
+    return BankAccountQuery(
+        id = id,
         since = since,
         expiredAt = expiredAt
     )
@@ -65,15 +70,11 @@ fun BankAccountEvent.transform(): BankAccountEventDTO {
     )
 }
 
-fun BankAccountEventDTO.transform(): BankAccountEvent {
-    return BankAccountEvent(
-        id = id.transform(),
+fun BankAccountEventDTO.transformQuery(): BankAccountEventQuery {
+    return BankAccountEventQuery(
+        id = id.transformQuery(),
         type = type,
         date = date,
         value = value
     )
 }
-
-
-
-

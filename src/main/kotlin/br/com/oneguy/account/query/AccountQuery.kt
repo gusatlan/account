@@ -1,7 +1,11 @@
 package br.com.oneguy.account.query
 
+import br.com.oneguy.account.mapper.transformQuery
 import br.com.oneguy.account.model.dto.BankAccountDTO
-import br.com.oneguy.account.model.query.BankAccountEventQuery
+import br.com.oneguy.account.model.dto.BankAccountEventDTO
+import br.com.oneguy.account.model.dto.id.BankAccountIdDTO
+import br.com.oneguy.account.model.query.BankAccountQuery
+import br.com.oneguy.account.model.query.BankAccountTransactionsQuery
 import br.com.oneguy.account.service.BankAccountEventService
 import br.com.oneguy.account.service.BankAccountService
 import org.slf4j.LoggerFactory
@@ -23,29 +27,48 @@ class AccountQuery(
         private val logger = LoggerFactory.getLogger(this::class.java)
     }
 
-    @QueryMapping(name = "findAccountById")
-    fun findAccountById(@Argument customerId: String, @Argument accountId: String): Mono<BankAccountDTO> {
+    @QueryMapping
+    fun findAccountAll(): Flux<BankAccountQuery> =
+        accountService
+            .find(retrieveEvents = false)
+            .map(BankAccountDTO::transformQuery)
+            .doOnNext {
+                logger.info("findAccount: $it")
+            }
+
+    @QueryMapping
+    fun findAccountById(@Argument bankAccountId: BankAccountIdDTO): Mono<BankAccountQuery> {
         return accountService.find(
-            customerId = customerId,
-            accountId = accountId,
+            customerId = bankAccountId.customerId,
+            accountId = bankAccountId.accountId,
             retrieveEvents = false
-        ).toMono()
+        )
+            .toMono()
+            .map(BankAccountDTO::transformQuery)
+            .doOnNext {
+                logger.info("findAccountById [${bankAccountId}]: $it")
+            }
     }
 
-    @SchemaMapping(value = "transactions")
-    fun findEvents(@Argument bankAccount: BankAccountDTO): Flux<BankAccountEventQuery> {
+    @SchemaMapping(typeName = "transactions")
+    fun findEvents(@Argument bankAccount: BankAccountQuery): Mono<BankAccountTransactionsQuery> {
         return accountEventService.find(
             customerId = bankAccount.id.customerId,
             accountId = bankAccount.id.accountId
         )
-            .map {
-                BankAccountEventQuery(
-                    id = it.id,
-                    type = it.type,
-                    date = it.date,
-                    value = it.value,
-                    bankAccount = bankAccount
-                )
+            .doOnNext {
+                logger.debug("findEvents event $it")
+            }
+            .map(BankAccountEventDTO::transformQuery)
+            .collectList()
+            .flatMap { events ->
+                Mono.just(BankAccountTransactionsQuery(events))
+            }
+            .doOnNext {
+                logger.info("findEvents [${bankAccount.id}]: $it")
+            }
+            .doOnError {
+                logger.error("findEvents [${bankAccount.id}]: $it")
             }
     }
 }

@@ -41,7 +41,7 @@ class BankAccountService(
         } else if (accountId != null) {
             repository.findByIdAccountId(cleanCodeText(accountId).lowercase())
         } else {
-            Flux.empty()
+            repository.findAll()
         }
 
         return items.flatMap { applyEvents(it, retrieveEvents) }
