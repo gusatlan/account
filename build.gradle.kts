@@ -33,7 +33,7 @@ dependencies {
 	implementation("org.springframework.cloud:spring-cloud-stream-binder-kafka")
 	implementation("org.springframework.kafka:spring-kafka")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-	implementation("com.fasterxml.jackson.core:jackson-databind:2.14.2")
+	implementation("com.fasterxml.jackson.core:jackson-databind:2.15.1")
 	implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.1.0")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("io.projectreactor:reactor-test")

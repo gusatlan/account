@@ -42,3 +42,7 @@ type Query {
     findAccountAll: [BankAccount]
     findAccountById(bankAccountId: IdBankAccount): BankAccount
 }
+
+type Mutation {
+    upsertBankAccount(customerId: String!, accountId: String!, since: String, expiredAt: String) : BankAccount
+}

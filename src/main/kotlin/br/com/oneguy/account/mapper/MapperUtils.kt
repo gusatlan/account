@@ -44,6 +44,15 @@ fun BankAccountEventIdDTO.transformQuery(): BankAccountEventIdQuery {
     )
 }
 
+fun BankAccountEventIdQuery.transform():  BankAccountEventIdDTO{
+    return BankAccountEventIdDTO(
+        customerId = customerId,
+        accountId = accountId,
+        eventId = eventId
+    )
+}
+
+
 fun BankAccount.transform(events: Collection<BankAccountEventDTO> = emptySet()): BankAccountDTO {
     return BankAccountDTO(
         id = id.transform(),
@@ -55,6 +64,14 @@ fun BankAccount.transform(events: Collection<BankAccountEventDTO> = emptySet()):
 
 fun BankAccountDTO.transformQuery(): BankAccountQuery {
     return BankAccountQuery(
+        id = id,
+        since = since,
+        expiredAt = expiredAt
+    )
+}
+
+fun BankAccountQuery.transform(): BankAccountDTO {
+    return BankAccountDTO(
         id = id,
         since = since,
         expiredAt = expiredAt
@@ -73,6 +90,15 @@ fun BankAccountEvent.transform(): BankAccountEventDTO {
 fun BankAccountEventDTO.transformQuery(): BankAccountEventQuery {
     return BankAccountEventQuery(
         id = id.transformQuery(),
+        type = type,
+        date = date,
+        value = value
+    )
+}
+
+fun BankAccountEventQuery.transform(): BankAccountEventDTO {
+    return BankAccountEventDTO(
+        id = id.transform(),
         type = type,
         date = date,
         value = value

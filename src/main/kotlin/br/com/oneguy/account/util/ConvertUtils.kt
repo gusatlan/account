@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import java.time.LocalDateTime
 
 val mapper = buildMapper()
 
@@ -33,5 +34,9 @@ fun cleanCodeText(text: String?): String {
 
 fun clean(text: String?): String {
     return text?.trim()?.lowercase() ?: ""
+}
+
+fun String.toLocalDateTime() : LocalDateTime {
+    return LocalDateTime.parse(this)
 }
 
