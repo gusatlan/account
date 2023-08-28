@@ -5,6 +5,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 val mapper = buildMapper()
 
@@ -38,5 +39,9 @@ fun clean(text: String?): String {
 
 fun String.toLocalDateTime() : LocalDateTime {
     return LocalDateTime.parse(this)
+}
+
+fun LocalDateTime.toISOString(): String {
+    return this.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
 }
 

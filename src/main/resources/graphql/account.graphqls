@@ -44,5 +44,10 @@ type Query {
 }
 
 type Mutation {
-    upsertBankAccount(customerId: String!, accountId: String!, since: String, expiredAt: String) : BankAccount
+    addBankAccount(customerId: String!, accountId: String!, since: String, expiredAt: String) : BankAccount
+    updateBankAccount(customerId: String!, accountId: String!, since: String, expiredAt: String) : BankAccount
+    deleteBankAccount(customerId: String!, accountId: String!) : BankAccount
+    addBankAccountEvent(customerId: String!, accountId: String!, eventId: String!, type: EventTransactionTypeEnum, date: String, value: Float) : BankAccountEvent
+    updateBankAccountEvent(customerId: String!, accountId: String!, eventId: String!, type: EventTransactionTypeEnum, date: String, value: Float) : BankAccountEvent
+    deleteBankAccountEvent(customerId: String!, accountId: String!, eventId: String!) : BankAccountEvent
 }
